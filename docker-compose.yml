@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-js-crud-migrations
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    command: ["npm", "run", "start:dev"]
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: root
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: nest-js-crud-migrations-database
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    container_name: nest-js-crud-migrations-postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: nest-js-crud-migrations-database
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
